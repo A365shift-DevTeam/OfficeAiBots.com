@@ -118,11 +118,7 @@ export default function AIChatFullScreen({
     }
 
     if (text === 'Email Us') {
-      setMessages((m) => [
-        ...m,
-        { role: 'user', content: text },
-        { role: 'assistant', content: 'SHOW_CONTACT_FORM' },
-      ]);
+      window.open('mailto:Info@ambot365.com', '_blank');
       return;
     }
 
@@ -156,80 +152,6 @@ export default function AIChatFullScreen({
         {li < arr.length - 1 && <br />}
       </span>
     ));
-
-  const ContactForm = () => {
-    const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
-    const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
-
-    const sub = async (e: any) => {
-      e.preventDefault();
-      setStatus('sending');
-      try {
-        const res = await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
-        });
-        if (res.ok) setStatus('success');
-        else setStatus('error');
-      } catch {
-        setStatus('error');
-      }
-    };
-
-    if (status === 'success') {
-      return (
-        <div className="bg-green-500/10 border border-green-500/20 text-green-400 p-4 rounded-xl text-sm">
-          Message sent successfully! We'll get back to you soon.
-        </div>
-      );
-    }
-
-    return (
-      <form onSubmit={sub} className="w-full max-w-md bg-gray-800 border border-gray-700 rounded-2xl p-4 space-y-3">
-        <h3 className="text-white font-medium text-sm" style={{ color: '#ffffff' }}>Send us a message</h3>
-        <input
-          required
-          type="text"
-          placeholder="Name"
-          className="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-[#4C99A0]"
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-        />
-        <input
-          required
-          type="email"
-          placeholder="Email"
-          className="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-[#4C99A0]"
-          value={formData.email}
-          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-        />
-        <input
-          required
-          type="text"
-          placeholder="Subject"
-          className="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-[#4C99A0]"
-          value={formData.subject}
-          onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-        />
-        <textarea
-          required
-          placeholder="Message"
-          rows={3}
-          className="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-[#4C99A0]"
-          value={formData.message}
-          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-        />
-        <button
-          disabled={status === 'sending'}
-          className="w-full py-2 bg-gradient-to-r from-[#4C99A0] to-[#65A859] text-white text-sm font-medium rounded-xl hover:opacity-90 transition-opacity disabled:opacity-50"
-        >
-          {status === 'sending' ? 'Sending...' : 'Send Message'}
-        </button>
-        {status === 'error' && <p className="text-red-400 text-[10px]">Failed to send. Please try again.</p>}
-      </form>
-    );
-  };
 
   const chatUI = (
     <AnimatePresence>
@@ -325,20 +247,16 @@ export default function AIChatFullScreen({
                                 <img src={ambotLogo} alt="AI" className="w-full h-full object-cover" />
                               </div>
                             )}
-                            {msg.content === 'SHOW_CONTACT_FORM' ? (
-                              <ContactForm />
-                            ) : (
-                              <div
-                                className={`max-w-[85%] md:max-w-[70%] rounded-2xl px-4 py-3 ${msg.role === 'user'
-                                  ? 'bg-gradient-to-r from-[#4C99A0] to-[#65A859] text-white rounded-br-md'
-                                  : 'bg-gray-800 text-gray-100 rounded-bl-md'
-                                  }`}
-                              >
-                                <p className="text-sm whitespace-pre-wrap leading-relaxed">
-                                  {renderText(msg.content)}
-                                </p>
-                              </div>
-                            )}
+                            <div
+                              className={`max-w-[85%] md:max-w-[70%] rounded-2xl px-4 py-3 ${msg.role === 'user'
+                                ? 'bg-gradient-to-r from-[#4C99A0] to-[#65A859] text-white rounded-br-md'
+                                : 'bg-gray-800 text-gray-100 rounded-bl-md'
+                                }`}
+                            >
+                              <p className="text-sm whitespace-pre-wrap leading-relaxed">
+                                {renderText(msg.content)}
+                              </p>
+                            </div>
                           </div>
 
                           {showSuggestions && (
