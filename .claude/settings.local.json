@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(C:\\\\Users\\\\jclem\\\\.claude\\\\plugins\\\\cache\\\\claude-plugins-official\\\\superpowers\\\\5.1.0\\\\scripts\\\\start-server.sh *)",
+      "Bash(npx tsc *)",
+      "Bash(node -e \"const p = require\\('./node_modules/react/package.json'\\); console.log\\(p.version\\)\")",
+      "Bash(npx vite *)"
+    ]
+  }
+}
